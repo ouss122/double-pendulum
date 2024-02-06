@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.selected{
+    @apply text-[#30313b] border-[#30313b]
+}
