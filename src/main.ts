@@ -25,7 +25,7 @@ let a2=Ang2.valueAsNumber;
 const red ="#b0453b"
 const blue ="#5f95ca"
 const black = "#4c4c4c"
-let methods=[explicite,ameliore,modifie,rk4]
+let methods=[explicite,ameliore,modifie,rk4,taylor]
 const webR = new WebR();
 await webR.init();
 let rFunction=await fetch("ch7.r");
