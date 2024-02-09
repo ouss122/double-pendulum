@@ -157,8 +157,6 @@ st.addEventListener("click",()=>{
 
 
 
-console.log('hello');
-
 new p5((p:p5) => {
   let px0=p.width/2;
 
