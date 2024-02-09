@@ -1,6 +1,6 @@
 import './style.css'
 import p5 from "p5"
-import {RDouble, RFunction, WebR} from "webr"
+import {RDouble, WebR} from "webr"
 
 
 let start=false;
@@ -18,6 +18,7 @@ let explicite=document.getElementById("explicite") as HTMLHeadingElement;
 let ameliore=document.getElementById("ameliore") as HTMLHeadingElement;
 let modifie=document.getElementById("modifie") as HTMLHeadingElement;
 let rk4=document.getElementById("rk4") as HTMLHeadingElement;
+let taylor=document.getElementById("taylor") as HTMLHeadingElement;
 let st=document.getElementById("start") as HTMLHeadingElement;
 let a1=Ang1.valueAsNumber;
 let a2=Ang2.valueAsNumber;
@@ -45,6 +46,9 @@ async function calculate(delta:number){
       break;
     case 3:
       k=await webR.evalR(`get_cords_rk4(${delta})`) as RDouble;
+      break;
+    case 4:
+      k=await webR.evalR(`get_cords_taylor(${delta})`) as RDouble;
       break;
     default:
       break;
@@ -84,6 +88,14 @@ rk4.addEventListener("click",async ()=>{
     methods[selected].classList.remove("selected")
     selected=3;
     rk4.classList.add("selected")
+    await webR.evalR("x<-c(0,0,x[3],x[4])")
+  }
+})
+taylor.addEventListener("click",async ()=>{
+  if (selected !==4 &&!start){
+    methods[selected].classList.remove("selected")
+    selected=4;
+    taylor.classList.add("selected")
     await webR.evalR("x<-c(0,0,x[3],x[4])")
   }
 })
@@ -149,8 +161,7 @@ console.log('hello');
 
 new p5((p:p5) => {
   let px0=p.width/2;
-  // let L1=1.5;
-  // let L2=1;
+
   let py0=200;
   let pt1=p.PI;
   let pt2=0.05;
@@ -180,16 +191,12 @@ new p5((p:p5) => {
     p.fill(red)
     p.circle(x2,y2,40) 
   }
-//   x1 <- L1*sin(x[3])
-// y1 <- -L1*cos(x[3])
-// x2 <- x1 + L2*sin(x[4])
-// y2 <- y1 - L2*cos(x[4])
+
  p.draw = async () => {
   let L1=l1Length.valueAsNumber;
   let L2=l2Length.valueAsNumber;
 
     if (start){
-      // let cords=await webR.evalR(`get_cords(${p.deltaTime*1.2/1000})`) as RDouble;
       let cords=await calculate(p.deltaTime*1.2/1000)
       let [pt1,pt2]=await (cords as RDouble).toArray() as number[];
 

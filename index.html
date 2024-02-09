@@ -9,9 +9,14 @@
   <body class="bg-[#c8c8c8] overflow-hidden">
     <div class="flex  w-screen h-screen">
       <div class="w-[320px] h-full font-mono font-bold text-[#30313b] p-3 select-none ">
+        <div class="flex justify-between">
           <h1 class="text-2xl">
             Config
           </h1>
+          <h1 id="start" class="border p-1 px-2 rounded-md cursor-pointer hover:text-[#30313b] hover:border-[#30313b] text-[#30313bca] border-[#30313bca]">Start</h1>
+
+
+        </div>
           <div class="p-2 ">
             <div class="">
               <div class="mt-3 flex justify-between items-center">
@@ -63,12 +68,12 @@
             <h1 id="ameliore" class="cursor-pointer hover:text-[#30313bd0] hover:border-[#30313bd0] border-b border-[#45464f8e] pb-2">Euler ameliore</h1>
             <h1 id="modifie" class="cursor-pointer hover:text-[#30313bd0] hover:border-[#30313bd0] border-b border-[#45464f8e] pb-2">Euler modifie</h1>
             <h1 id="rk4" class="cursor-pointer selected hover:text-[#30313bd0] hover:border-[#30313bd0] border-b border-[#45464f8e] pb-2">Runge kutta 4</h1>
+            <h1 id="taylor" class="cursor-pointer hover:text-[#30313bd0] hover:border-[#30313bd0] border-b border-[#45464f8e] pb-2">Taylor d'ordre 2</h1>
 
           </div>
 
-          <div class="flex justify-center px-10 mt-5">
-            <h1 id="start" class="border p-1 px-2 rounded-md cursor-pointer hover:text-[#30313b] hover:border-[#30313b] text-[#30313bca] border-[#30313bca]">Start</h1>
-          </div>
+          <!-- <div class="flex justify-center px-10 mt-5">
+          </div> -->
       </div>
       <div class="flex-1 w-full h-full" id="app"></div>
     </div>

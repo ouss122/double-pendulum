@@ -112,7 +112,71 @@ get_cords_eulerA <- function (delta){
 # euler_modifie(g,0.1,11)
 
 
-#   dtet <- t1-t2
-#    e<- expression((m2*L1*(o1^2)*sin(2*dtet)+2*m2*L2*(o2^2)*sin(dtet)+2*g*m2*cos(t2)*sin(dtet)+2*g*m1*sin(t1))/(-2*L1*(m1+m2*(sin(dtet)^2))))
+#   dtet <- (t1-t2)
 
-deriv(f,"t")
+
+# f<- function (x,t){
+#     return(c(double_pendulum_o1(x[1],x[2],x[3],x[4]),double_pendulum_o2(x[1],x[2],x[3],x[4]),double_pendulum_t1(x[1]),double_pendulum_t2(x[2])))
+# }
+
+db_o1_d_o1<-function (o1,o2,t1,t2){
+    return((m2 * L1 * (2 * o1) * sin(2 * (t1 - t2))/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2)))))
+}
+db_o1_d_o2<-function (o1,o2,t1,t2){
+    return((2 * m2 * L2 * (2 * o2) * sin(t1 - t2)/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2)))))
+}
+
+db_o1_d_t1<-function(o1,o2,t1,t2){
+    return((m2 * L1 * (o1^2) * (cos(2 * (t1 - t2)) * 2) + 2 * m2 * L2 * (o2^2) * cos(t1 - t2) + 2 * g * m2 * cos(t2) * cos(t1 - t2) + 2 * g * m1 * cos(t1))/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2))) - (m2 * L1 * (o1^2) * sin(2 * (t1 - t2)) + 2 * m2 * L2 * (o2^2) * sin(t1 - t2) + 2 * g * m2 * cos(t2) * sin(t1 - t2) + 2 * g * m1 * sin(t1)) * (-2 * L1 * (m2 * (2 * (cos(t1 - t2) * sin(t1 - t2)))))/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2)))^2)
+}
+db_o1_d_t2<-function(o1,o2,t1,t2){
+    return((-((2 * g * m2 * cos(t2) * cos(t1 - t2) + 2 * g * m2 * sin(t2) *  sin(t1 - t2) + (2 * m2 * L2 * (o2^2) * cos(t1 - t2) + m2 * L1 * (o1^2) * (cos(2 * (t1 - t2)) * 2)))/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2))) - (m2 * L1 * (o1^2) * sin(2 * (t1 - t2)) + 2 * m2 * L2 * (o2^2) * sin(t1 - t2) + 2 * g * m2 * cos(t2) * sin(t1 - t2) + 2 * g * m1 * sin(t1)) * (-2 * L1 * (m2 * (2 * (cos(t1 - t2) * sin(t1 - t2)))))/(-2 * L1 * (m1 + m2 * (sin(t1 - t2)^2)))^2)))
+}
+
+db_o2_d_o1<-function (o1,o2,t1,t2){
+    return((2 * (m1 + m2) * L1 * (2 * o1) * sin(t1 - t2)/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2)))))
+}
+
+db_o2_d_o2<-function (o1,o2,t1,t2){
+    return((m2 * L2 * (2 * o2) * sin(2 * (t1 - t2))/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2)))))
+}
+
+db_o2_d_t1<-function (o1,o2,t1,t2){
+    return(((m2 * L2 * (o2^2) * (cos(2 * (t1 - t2)) * 2) + 2 * (m1 + m2) * L1 * (o1^2) * cos(t1 - t2) + (2 * g * (m1 + m2) * cos(t1) * cos(t1 - t2) - 2 * g * (m1 + m2) * sin(t1) * sin(t1 - t2)))/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2))) - (m2 * L2 * (o2^2) * sin(2 * (t1 - t2)) + 2 * (m1 + m2) * L1 * (o1^2) * sin(t1 - t2) + 2 * g * (m1 + m2) * cos(t1) * sin(t1 - t2)) * (2 * L2 * (m2 * (2 * (cos(t1 - t2) * sin(t1 - t2)))))/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2)))^2))
+}
+db_o2_d_t2<-function (o1,o2,t1,t2){
+    return((-((2 * g * (m1 + m2) * cos(t1) * cos(t1 - t2) + (2 * (m1 + m2) * L1 * (o1^2) * cos(t1 - t2) + m2 * L2 * (o2^2) * (cos(2 * (t1 - t2)) * 2)))/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2))) - (m2 * L2 * (o2^2) * sin(2 * (t1 - t2)) + 2 * (m1 + m2) * L1 * (o1^2) * sin(t1 - t2) + 2 * g * (m1 + m2) * cos(t1) * sin(t1 - t2)) * (2 * L2 * (m2 * (2 * (cos(t1 - t2) * sin(t1 - t2)))))/(2 * L2 * (m1 + m2 * (sin(t1 - t2)^2)))^2)))
+}
+
+
+
+
+
+fdo1<-function (x,t){  #df/do1
+    return(c(db_o1_d_o1(x[1],x[2],x[3],x[4]),db_o2_d_o1(x[1],x[2],x[3],x[4]),1,0))
+}
+fdo2<-function(x,t){
+    return(c(db_o1_d_o2(x[1],x[2],x[3],x[4]),db_o2_d_o2(x[1],x[2],x[3],x[4]),0,1))
+}
+fdt1<-function(x,t){
+    return(c(db_o1_d_t1(x[1],x[2],x[3],x[4]),db_o2_d_t1(x[1],x[2],x[3],x[4]),0,0))
+}
+fdt2<-function(x,t){
+    return(c(db_o1_d_t2(x[1],x[2],x[3],x[4]),db_o2_d_t2(x[1],x[2],x[3],x[4]),0,0))
+}
+
+
+taylor <- function (f,h,n=1){
+    while (n>0){
+        x <<- x + h*f(x,t) +((h^2)/2)*(fdo1(x,t)+fdo2(x,t)+fdt1(x,t)+fdt2(x,t))
+        t <<- t + h
+        n <- n-1
+    } 
+}
+
+
+get_cords_taylor <- function (delta){
+    taylor(f,delta);
+    return(c(x[3],x[4]))
+}
+
